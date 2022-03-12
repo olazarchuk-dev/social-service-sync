@@ -9,9 +9,12 @@ import { Something } from '../../types/something';
 import { useGetDevices } from '../../hooks/use_get_devices';
 import { getDevicesInUser } from '../../service/get_devices_in_user'
 import Loading from '../../component/loading';
+import loadable from '@loadable/component';
+const ReactJson = loadable(() => import('react-json-view'));
 
 export default function SocialSettings() {
   const [somethings, setSomethings] = useState<Array<Something>>([]);
+  const [somethingLast, setSomethingLast] = useState({});
   const usernameVal = useRef(null);
   const emailAddressVal = useRef(null);
   const alignedCbCheck = useRef(null);
@@ -49,6 +52,7 @@ export default function SocialSettings() {
 
     conn.onmessage = (messageEvent) => { // TODO: receive remote Something(s)
       const something: Something = JSON.parse(messageEvent.data);
+        setSomethingLast(something);
 
         if (something.appUsername == 'joined_device') {
             setDevices([...devices, { deviceName: something.deviceName }]); // TODO: [one special] sync joined device(s) by user
@@ -320,7 +324,7 @@ export default function SocialSettings() {
           </div>
         </div>
 
-        <div className="md:w-3/12 md:visible invisible flex flex-col border-l-2 border-dark-secondary p-4">
+        <div className="md:w-3/6 md:visible invisible flex flex-col border-l-2 border-dark-secondary p-4">
           <div className="fixed">
             <OnCloseJoin rejoin={rejoin} joinStatus={joinStatus} />
             <div className="mb-4 text-lg font-bold">sync device(s)</div>
@@ -330,6 +334,9 @@ export default function SocialSettings() {
                 <div>{device.deviceName}</div>
               </div>
             ))}
+            <div className="pt-10 mb-4">
+                <ReactJson src={somethingLast} />
+            </div>
           </div>
         </div>
       </div>

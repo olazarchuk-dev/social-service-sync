@@ -65,3 +65,17 @@
 **TCP — надежнее и осуществляет контроль над процессом обмена данными.**
 
 **UDP — обеспечивает более высокую скорость передачи данных.**
+
+
+---
+
+* `JSON viewer for react`: https://bestofreactjs.com/repo/mac-s-g-react-json-view
+  ```shell script
+  npm install --save react-json-view
+  ```
+  + `ReferenceError: document is not defined`: https://github.com/mac-s-g/react-json-view/issues/296
+    - ![Screenshot-1](screenshot_1.png)
+    - https://loadable-components.com/docs/getting-started
+      ```shell script
+      npm install @loadable/component
+      ```
