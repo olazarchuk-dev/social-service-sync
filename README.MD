@@ -1,4 +1,32 @@
-# social-service-sync
+# Social server | settings sync demo
+
++ Step `Register new Device(s)`: http://localhost:3000/register
+  ![Screenshot-1](img/screenshot_1.png)
+
++ Step `Login use Device`: http://localhost:3000/login
+  ![Screenshot-2](img/screenshot_2.png)
+
++ Step `Connect / Join to one User from several device(s)`: http://localhost:3000
+  ![Screenshot-3](img/screenshot_3.png)
+
+  ![Screenshot-4](img/screenshot_4.png)
+
+  ![Screenshot-5](img/screenshot_5.png)
+
+  ![Screenshot-6](img/screenshot_6.png)
+
+* Step `Use Application 'Settings sync demo'`: http://localhost:3000/app
+  ![Screenshot-7](img/screenshot_7.png)
+
+  ![Screenshot-8](img/screenshot_8.png)
+
+
+---
+
+| Folder      | Description |
+| ----------- | ----------- |
+| server      | Golang API  |
+| client      | Next JS     |
 
 + Language: `Golang`
 + Пакеты:
@@ -6,22 +34,6 @@
   - `jinzhu / gorm` — ORM-библиотека для Golang, будем используем этот пакет, чтобы взаимодействовать с базой данных.
   - `dgrijalva / jwt-go` — используется для подписи и проверки JWT-токенов.
   - `joho / godotenv` — используется для загрузки .env-файлов в проект.
-
-```shell script
-CREATE TABLE "accounts" ("id" serial,"created_at" timestamp with time zone,"updated_at" timestamp with time zone,"deleted_at" timestamp with time zone,"email" text,"password" text,"token" text , PRIMARY KEY ("id"))  
-CREATE INDEX idx_accounts_deleted_at ON "accounts"(deleted_at)   
-CREATE TABLE "contacts" ("id" serial,"created_at" timestamp with time zone,"updated_at" timestamp with time zone,"deleted_at" timestamp with time zone,"name" text,"phone" text,"user_id" integer , PRIMARY KEY ("id"))  
-CREATE INDEX idx_contacts_deleted_at ON "contacts"(deleted_at)   
-```
-
-![Screenshot-1](screenshot_1.png)
-
-![Screenshot-2](screenshot_2.png)
-
-```shell script
-host=172.31.75.175 user=trademaster dbname=postgres sslmode=disable password=RVHmBTK6In1nvGryKxEy
-8000
-```
 
 * [Socket.IO — Краткое руководство](https://coderlessons.com/tutorials/kompiuternoe-programmirovanie/uznaite-socket-io/socket-io-kratkoe-rukovodstvo)
   * `Socket.IO` — это библиотека JavaScript для веб-приложений реального времени (RTA). Он обеспечивает двустороннюю связь в реальном времени между веб-клиентами и серверами.
