@@ -42,7 +42,7 @@ func (contact *Contact) Create() map[string]interface{} {
 		return resp
 	}
 
-	GetDB().Create(contact)
+	DbConn().Create(contact)
 
 	resp := u.Message(true, "success")
 	resp["contact"] = contact
@@ -52,7 +52,7 @@ func (contact *Contact) Create() map[string]interface{} {
 func GetContact(id uint) *Contact {
 
 	contact := &Contact{}
-	err := GetDB().Table("contacts").Where("id = ?", id).First(contact).Error
+	err := DbConn().Table("contacts").Where("id = ?", id).First(contact).Error
 	if err != nil {
 		return nil
 	}
@@ -62,7 +62,7 @@ func GetContact(id uint) *Contact {
 func GetContacts(user uint) []*Contact {
 
 	contacts := make([]*Contact, 0)
-	err := GetDB().Table("contacts").Where("user_id = ?", user).Find(&contacts).Error
+	err := DbConn().Table("contacts").Where("user_id = ?", user).Find(&contacts).Error
 	if err != nil {
 		fmt.Println(err)
 		return nil
