@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"go-contacts/app"
-	"go-contacts/controllers"
 	"net/http"
 	"os"
+	"social-service-sync/app"
+	"social-service-sync/controllers"
 )
 
 func main() {

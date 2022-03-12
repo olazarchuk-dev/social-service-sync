@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
-	"go-contacts/models"
-	u "go-contacts/utils"
 	"net/http"
 	"os"
+	"social-service-sync/models"
+	u "social-service-sync/utils"
 	"strings"
 )
 
@@ -75,5 +75,5 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		ctx := context.WithValue(r.Context(), "user", tk.UserId)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r) //proceed in the middleware chain!
-	});
+	})
 }
