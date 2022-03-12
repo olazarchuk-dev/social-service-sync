@@ -14,6 +14,10 @@ CREATE TABLE "contacts" ("id" serial,"created_at" timestamp with time zone,"upda
 CREATE INDEX idx_contacts_deleted_at ON "contacts"(deleted_at)   
 ```
 
+![Screenshot-1](screenshot_1.png)
+
+![Screenshot-2](screenshot_2.png)
+
 ```shell script
 host=172.31.75.175 user=trademaster dbname=postgres sslmode=disable password=RVHmBTK6In1nvGryKxEy
 8000
