@@ -36,10 +36,10 @@ func (hub *Hub) Run() {
 				fmt.Println(" ...Hub.Unregister: delete Connection")
 				if len(hub.Users[wsService.Username].WsServices) != 0 {
 					hub.Broadcast <- &Something{
-						Id:          wsService.Id,
-						Username:    wsService.Username,
-						DeviceName:  wsService.DeviceName,
-						AppUsername: "disjoined_device", // TODO: [special] sync disjoined device(s) by user
+						Id:               wsService.Id,
+						Username:         wsService.Username,
+						DeviceName:       wsService.DeviceName,
+						SyncDeviceJoined: "disjoined_device", // TODO: [special] sync disjoined device(s) by user
 					}
 				}
 				delete(hub.Users[wsService.Username].WsServices, wsService.Id)
@@ -57,11 +57,12 @@ func (hub *Hub) Run() {
 			if _, exist := hub.Users[something.Username]; exist {
 				for _, wsService := range hub.Users[something.Username].WsServices {
 					if wsService.Username == something.Username {
-						wsService.Something <- something // TODO: Websocket.Connect: Id, Username, DeviceName;  ||  App (settings): AppUsername, AppEmailAddress, AppAlignedCb, AppBillingPeriod, AppSalary;
+						wsService.Something <- something // TODO: Websocket.Connect: Id, Username, DeviceName, SyncDeviceJoined;  ||  App (settings): AppUsername, AppEmailAddress, AppAlignedCb, AppBillingPeriod, AppSalary;
 						fmt.Println(" ...Hub.Broadcast something <<<",
 							"(Conn) Id='"+something.Id+"'",
 							"(Conn) Username='"+something.Username+"'",
 							"(Conn) DeviceName='"+something.DeviceName+"'",
+							"(Sync) SyncDeviceJoined='"+something.SyncDeviceJoined+"'",
 							"(App) Username='"+something.AppUsername+"'",
 							"(App) EmailAddress='"+something.AppEmailAddress+"'",
 							"(App) AlignedCb='"+strconv.FormatBool(something.AppAlignedCb)+"'",

@@ -27,7 +27,8 @@ func JoinUser(hub *ws.Hub) fiber.Handler {
 			Id:               wsService.Id,
 			Username:         wsService.Username,
 			DeviceName:       wsService.DeviceName,
-			AppUsername:      "joined_device", // TODO: [one special] sync joined device(s) by user
+			SyncDeviceJoined: "joined_device", // TODO: [one special] sync joined device(s) by user
+			AppUsername:      "",
 			AppEmailAddress:  "",
 			AppAlignedCb:     false,
 			AppBillingPeriod: 3,

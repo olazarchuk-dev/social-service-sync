@@ -4,6 +4,7 @@ type Something struct { // TODO: init dynamic data
 	Id               string `json:"id"`
 	Username         string `json:"username"`
 	DeviceName       string `json:"deviceName"`
+	SyncDeviceJoined string `json:"syncDeviceJoined"`
 	AppUsername      string `json:"appUsername"`
 	AppEmailAddress  string `json:"appEmailAddress"`
 	AppAlignedCb     bool   `json:"appAlignedCb"`
