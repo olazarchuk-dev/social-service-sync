@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Range, getTrackBackground } from 'react-range';
 import { WebSocketContext } from '../../modules/websocket_provider';
 import router from 'next/router';
+import SyncDeviceJoined from "../../component/sync_device_joined";
 import SyncUsername from "../../component/sync_username";
 import SyncEmailAddress from "../../component/sync_email_address";
 import { AuthContext } from '../../modules/auth_provider';
@@ -15,6 +16,7 @@ const ReactJson = loadable(() => import('react-json-view'));
 export default function SocialSettings() {
   const [somethings, setSomethings] = useState<Array<Something>>([]);
   const [somethingLast, setSomethingLast] = useState({});
+  const deviceJoinedVal = useRef(null);
   const usernameVal = useRef(null);
   const emailAddressVal = useRef(null);
   const alignedCbCheck = useRef(null);
@@ -52,17 +54,17 @@ export default function SocialSettings() {
 
     conn.onmessage = (messageEvent) => { // TODO: receive remote Something(s)
       const something: Something = JSON.parse(messageEvent.data);
-        setSomethingLast(something);
+      setSomethingLast(something);
 
-        if (something.appUsername == 'joined_device') {
-            setDevices([...devices, { deviceName: something.deviceName }]); // TODO: [one special] sync joined device(s) by user
-            return;
-        }
-        if (something.appUsername == 'disjoined_device') {
-            const deleteDevice = devices.filter((device) => device.deviceName != something.deviceName); // TODO: [one special] sync disjoined device(s) by user
-            setDevices([...deleteDevice]);
-            return;
-        }
+      if (something.syncDeviceJoined == 'joined_device') {
+        setDevices([...devices, { deviceName: something.deviceName }]); // TODO: [one special] sync joined device(s) by user
+        return;
+      }
+      if (something.syncDeviceJoined == 'disjoined_device') {
+        const deleteDevice = devices.filter((device) => device.deviceName != something.deviceName); // TODO: [one special] sync disjoined device(s) by user
+        setDevices([...deleteDevice]);
+        return;
+      }
       jwtClaims.id == something.id ? (something.type = 'recv') : (something.type = 'self');
 
       setAlignedCbVal({checked: something.appAlignedCb});
@@ -75,10 +77,11 @@ export default function SocialSettings() {
       setSomethings([...somethings, something]);
       console.log(' ...app.useEffect: conn.onmessage (somethings) <<<', somethings)
     }
-  }, [conn, devices, somethings, usernameVal, emailAddressVal]);
+  }, [conn, devices, somethings, deviceJoinedVal, usernameVal, emailAddressVal]);
 
   const sendSomething = () => {
     let data = {
+      syncDeviceJoined: deviceJoinedVal.current,
       appUsername: usernameVal.current.value,
       appEmailAddress: emailAddressVal.current.value,
       appAlignedCb: alignedCbCheck.current.checked,
@@ -112,6 +115,9 @@ export default function SocialSettings() {
   console.log(JSON.stringify(" ...app: devices <<<", devices))
 
   return (
+    <>
+      <SyncDeviceJoined somethings={somethings} syncDeviceJoinedVal={deviceJoinedVal} />
+
       <div className="flex flex-col md:flex-row w-full">
         <div className="flex items-center justify-center w-full md:w-9/14">
           <div className="p-4 md:mx-24 mb-14">
@@ -334,12 +340,13 @@ export default function SocialSettings() {
                 <div>{device.deviceName}</div>
               </div>
             ))}
-            <div className="pt-10 mb-4">
+            <div className="pt-16 mb-4">
                 <ReactJson src={somethingLast} />
             </div>
           </div>
         </div>
       </div>
+    </>
   );
 }
 
