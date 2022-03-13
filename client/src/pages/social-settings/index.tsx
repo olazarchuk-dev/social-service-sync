@@ -147,22 +147,21 @@ export default function SocialSettings() {
       <div className="flex flex-col md:flex-row w-full">
         <div className="flex items-center justify-center w-full md:w-9/14">
           <div className="mb-36">
-
-              <div className="flex items-center justify-center  mb-60">
-                  <input className="p-2 border border-dark rounded-md  focus:outline-none border border-dark-primary focus:border-blue"
-                         type="text"
-                         placeholder="username"
-                         onChange={onUserChange}/>
-                  <button className="md:mt-0 text-yellow border border-yellow rounded-md p-2 pl-4 pr-4 md:ml-4"
-                          onClick={() => joinUser(username)}>
-                      join
-                  </button>
-                  <button className="md:mt-0 text-yellow border border-yellow rounded-md p-2 pl-4 pr-4 md:ml-4"
-                          onClick={() => disjoinUser()}>
-                      disjoin
-                  </button>
-                  <OnCloseJoin rejoin={rejoin} joinStatus={joinStatus} />
-              </div>
+            <div className="flex items-center justify-center  mb-60">
+                <input className="md:mt-4 p-2 border border-dark rounded-md  focus:outline-none border border-dark-primary focus:border-blue"
+                       type="text"
+                       placeholder="username"
+                       onChange={onUserChange}/>
+                <button className="md:mt-4 text-yellow border border-yellow rounded-md p-2 pl-4 pr-4 md:ml-4"
+                        onClick={() => joinUser(username)}>
+                    join
+                </button>
+                <button className="md:mt-4 text-yellow border border-yellow rounded-md p-2 pl-4 pr-4 md:ml-4"
+                        onClick={() => disjoinUser()}>
+                    disjoin
+                </button>
+                <OnCloseJoin rejoin={rejoin} joinStatus={joinStatus} />
+            </div>
 
             <div className="flex items-center justify-center"
                  style={{
@@ -377,15 +376,15 @@ export default function SocialSettings() {
 
         <div className="md:w-2/6 md:visible invisible flex flex-col p-4">
           <div className="fixed">
-            <div className="mb-4 text-lg font-bold">sync device(s)</div>
+            <div className="mb-8 text-lg font-bold">sync device(s)</div>
             {devices.map((device, index) => (
               <div className="ml-1 flex flex-row items-center h-full min-w-full" key={index}>
                 <div className="h-2 w-2 mr-2 bg-green  items-center rounded-full"></div>
                 <div>{device.deviceName}</div>
               </div>
             ))}
-              <div className="mb-40"></div>
-            <div className="pt-16 mb-4">
+              <div className="mb-20"></div>
+            <div className="pt-16">
                 <ReactJson src={somethingLast} />
             </div>
           </div>
@@ -400,7 +399,7 @@ export function OnCloseJoin({ rejoin, joinStatus }) {
   const joinedStyleErr = 'py-2.5 px-4 flex flex-row justify-end w-full  bg-red bg-opacity-10 text-red rounded-md';
 
   return (
-    <div className="ml-4 md:mt-0 inline-block">
+    <div className="md:mt-4 ml-4 inline-block">
       <div className={ joinStatus.includes('disjoined') ? joinedStyleErr: joinedStyleOn }>
         <div>{joinStatus}</div>
         {joinStatus.includes('disjoined') && (
