@@ -146,9 +146,9 @@ export default function SocialSettings() {
 
       <div className="flex flex-col md:flex-row w-full">
         <div className="flex items-center justify-center w-full md:w-9/14">
-          <div className="p-4 md:mx-24 mb-14">
+          <div className="mb-36">
 
-              <div className="flex items-center justify-center   md:mx-4 mb-60">
+              <div className="flex items-center justify-center  mb-60">
                   <input className="p-2 border border-dark rounded-md  focus:outline-none border border-dark-primary focus:border-blue"
                          type="text"
                          placeholder="username"
@@ -221,20 +221,22 @@ export default function SocialSettings() {
                 </div>
                 <div />
             </div>
-
             <div className="mt-2 grid grid-cols-4">
                 <div />
-                <div />
+                <div className="text-right">
+                    I&#x27;ve read the terms and conditions
+                </div>
                 <div className="pl-3" style={{borderRadius: '5px'}}>
                     <input type="checkbox"
                            ref={alignedCbCheck}
                            onChange={sendSomething}
                            checked={syncAlignedCbVal.current.checked}
-                            /> I&#x27;ve read the terms and conditions
+                            />
                 </div>
                 <div />
             </div>
-            <div className="mt-2 grid grid-cols-6">
+
+            <div className="mt-6 grid grid-cols-6">
                 <div />
                 <div className="text text-dark-secondary text-right  md:w-6/6 flex flex-col border-b-2 border-dark-secondary">
                     <legend>Billing form (block 2 to sync)</legend>
@@ -306,7 +308,6 @@ export default function SocialSettings() {
                         )}
                     />
                 </div>
-
                 <div className="text-right">
                     <label>Salary ${salaryVal.values}</label>
                 </div>
@@ -374,7 +375,7 @@ export default function SocialSettings() {
           </div>
         </div>
 
-        <div className="md:w-3/6 md:visible invisible flex flex-col p-4">
+        <div className="md:w-2/6 md:visible invisible flex flex-col p-4">
           <div className="fixed">
             <div className="mb-4 text-lg font-bold">sync device(s)</div>
             {devices.map((device, index) => (
