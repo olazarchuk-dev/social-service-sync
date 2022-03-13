@@ -153,14 +153,15 @@ export default function SocialSettings() {
                          type="text"
                          placeholder="username"
                          onChange={onUserChange}/>
-                  <button className="mt-4 md:mt-0 text-yellow border border-yellow rounded-md p-2 pl-4 pr-4 md:ml-4"
+                  <button className="md:mt-0 text-yellow border border-yellow rounded-md p-2 pl-4 pr-4 md:ml-4"
                           onClick={() => joinUser(username)}>
                       join
                   </button>
-                  <button className="mt-4 md:mt-0 text-yellow border border-yellow rounded-md p-2 pl-4 pr-4 md:ml-4"
+                  <button className="md:mt-0 text-yellow border border-yellow rounded-md p-2 pl-4 pr-4 md:ml-4"
                           onClick={() => disjoinUser()}>
                       disjoin
                   </button>
+                  <OnCloseJoin rejoin={rejoin} joinStatus={joinStatus} />
               </div>
 
             <div className="flex items-center justify-center"
@@ -375,14 +376,14 @@ export default function SocialSettings() {
 
         <div className="md:w-3/6 md:visible invisible flex flex-col p-4">
           <div className="fixed">
-            <OnCloseJoin rejoin={rejoin} joinStatus={joinStatus} />
             <div className="mb-4 text-lg font-bold">sync device(s)</div>
             {devices.map((device, index) => (
-              <div className="ml-4 flex flex-row items-center h-full min-w-full" key={index}>
+              <div className="ml-1 flex flex-row items-center h-full min-w-full" key={index}>
                 <div className="h-2 w-2 mr-2 bg-green  items-center rounded-full"></div>
                 <div>{device.deviceName}</div>
               </div>
             ))}
+              <div className="mb-40"></div>
             <div className="pt-16 mb-4">
                 <ReactJson src={somethingLast} />
             </div>
@@ -394,11 +395,11 @@ export default function SocialSettings() {
 }
 
 export function OnCloseJoin({ rejoin, joinStatus }) {
-  const joinedStyleErr = 'p-2 px-4 flex flex-row justify-end w-full  bg-red bg-opacity-10 text-red rounded-md';
-  const joinedStyleOn =  'p-2 px-4 flex flex-row justify-end w-full  bg-green bg-opacity-10 text-green rounded-md';
+  const joinedStyleOn =  'py-2.5 px-4 flex flex-row justify-end w-full  bg-green bg-opacity-10 text-green rounded-md';
+  const joinedStyleErr = 'py-2.5 px-4 flex flex-row justify-end w-full  bg-red bg-opacity-10 text-red rounded-md';
 
   return (
-    <div className="mt-4 mb-4 inline-block">
+    <div className="ml-4 md:mt-0 inline-block">
       <div className={ joinStatus.includes('disjoined') ? joinedStyleErr: joinedStyleOn }>
         <div>{joinStatus}</div>
         {joinStatus.includes('disjoined') && (
