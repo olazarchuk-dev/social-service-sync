@@ -1,24 +1,8 @@
 # Social server | settings sync demo
 
-+ Step `Register new Device(s)`: http://localhost:3000/register
+* `Use Application 'Settings sync demo'`: http://localhost:3000/social-settings
   ![Screenshot-1](img/screenshot_1.png)
-
-+ Step `Login use Device`: http://localhost:3000/login
   ![Screenshot-2](img/screenshot_2.png)
-
-+ Step `Connect / Join to one User from several device(s)`: http://localhost:3000
-  ![Screenshot-3](img/screenshot_3.png)
-
-  ![Screenshot-4](img/screenshot_4.png)
-
-  ![Screenshot-5](img/screenshot_5.png)
-
-  ![Screenshot-6](img/screenshot_6.png)
-
-* Step `Use Application 'Settings sync demo'`: http://localhost:3000/app
-  ![Screenshot-7](img/screenshot_7.png)
-
-  ![Screenshot-8](img/screenshot_8.png)
 
 
 ---
