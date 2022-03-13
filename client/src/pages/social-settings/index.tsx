@@ -376,7 +376,7 @@ export default function SocialSettings() {
 
         <div className="md:w-2/6 md:visible invisible flex flex-col p-4">
           <div className="fixed">
-            <div className="mb-2 text-lg font-bold">sync device(s)</div>
+            <div className="mb-2 text-lg font-bold">online</div>
             {devices.map((device, index) => (
               <div className="ml-1 flex flex-row items-center h-full min-w-full" key={index}>
                 <div className="h-2 w-2 mr-2 bg-green  items-center rounded-full"></div>
