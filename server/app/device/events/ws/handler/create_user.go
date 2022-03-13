@@ -3,7 +3,7 @@ package handler
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"github.com/olazarchuk-dev/go-social-service/server/app/device/events/ws"
+	"github.com/olazarchuk-dev/social-service-sync/server/app/device/events/ws"
 )
 
 type User struct { // TODO: JoinUser

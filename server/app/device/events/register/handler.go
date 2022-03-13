@@ -5,7 +5,7 @@ import (
 	"database/sql"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/olazarchuk-dev/go-social-service/server/model/api"
+	"github.com/olazarchuk-dev/social-service-sync/server/model/api"
 )
 
 func Handler(ctx *fiber.Ctx, db *sql.DB) error {

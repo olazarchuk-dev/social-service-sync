@@ -5,9 +5,9 @@ import (
 	"database/sql"
 	"strings"
 
-	"github.com/olazarchuk-dev/go-social-service/server/app/helper"
-	"github.com/olazarchuk-dev/go-social-service/server/model/api"
-	"github.com/olazarchuk-dev/go-social-service/server/model/entity"
+	"github.com/olazarchuk-dev/social-service-sync/server/app/helper"
+	"github.com/olazarchuk-dev/social-service-sync/server/model/api"
+	"github.com/olazarchuk-dev/social-service-sync/server/model/entity"
 	"golang.org/x/crypto/bcrypt"
 )
 

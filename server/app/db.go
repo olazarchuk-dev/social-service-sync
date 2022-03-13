@@ -6,7 +6,7 @@ import (
 	"log"
 
 	_ "github.com/lib/pq"
-	"github.com/olazarchuk-dev/go-social-service/server/app/config"
+	"github.com/olazarchuk-dev/social-service-sync/server/app/config"
 )
 
 var db *sql.DB

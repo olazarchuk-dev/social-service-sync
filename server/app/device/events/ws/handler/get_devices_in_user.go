@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/olazarchuk-dev/go-social-service/server/app/device/events/ws"
-	"github.com/olazarchuk-dev/go-social-service/server/model/api"
+	"github.com/olazarchuk-dev/social-service-sync/server/app/device/events/ws"
+	"github.com/olazarchuk-dev/social-service-sync/server/model/api"
 )
 
 type WsServices struct {

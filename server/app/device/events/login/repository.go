@@ -4,11 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/olazarchuk-dev/go-social-service/server/model/api"
+	"github.com/olazarchuk-dev/social-service-sync/server/model/api"
 	"log"
 
-	"github.com/olazarchuk-dev/go-social-service/server/app/helper"
-	"github.com/olazarchuk-dev/go-social-service/server/model/entity"
+	"github.com/olazarchuk-dev/social-service-sync/server/app/helper"
+	"github.com/olazarchuk-dev/social-service-sync/server/model/entity"
 )
 
 func Repository(ctx context.Context, tx *sql.Tx, request api.LoginRequest) (*entity.Users, error) {

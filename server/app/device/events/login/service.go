@@ -8,9 +8,9 @@ import (
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/olazarchuk-dev/go-social-service/server/app/config"
-	"github.com/olazarchuk-dev/go-social-service/server/app/helper"
-	"github.com/olazarchuk-dev/go-social-service/server/model/api"
+	"github.com/olazarchuk-dev/social-service-sync/server/app/config"
+	"github.com/olazarchuk-dev/social-service-sync/server/app/helper"
+	"github.com/olazarchuk-dev/social-service-sync/server/model/api"
 	"golang.org/x/crypto/bcrypt"
 )
 
