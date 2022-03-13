@@ -11,6 +11,9 @@ import { useGetDevices } from '../../hooks/use_get_devices';
 import { getDevicesInUser } from '../../service/get_devices_in_user'
 import Loading from '../../component/loading';
 import loadable from '@loadable/component';
+import Spinner from "../../component/spinner";
+import Link from "next/link";
+import {WEBSOCKET_URL} from "../../constants";
 const ReactJson = loadable(() => import('react-json-view'));
 
 export default function SocialSettings() {
@@ -30,6 +33,7 @@ export default function SocialSettings() {
   const { jwtClaims } = useContext(AuthContext);
   const [joinStatus, setJoinStatus] = useState(''); // TODO: Status joined device(s) = (joined, disjoined, rejoin)  ( joined_device, disjoined_device )
   const { devices, setDevices } = useGetDevices(); // TODO: call 'useGetDevices' >> 'getDevicesInUser' from join user with 'username'
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     console.log(" ...app.useEffect: jwtClaims <<<", jwtClaims);
@@ -100,15 +104,37 @@ export default function SocialSettings() {
     const ws = new WebSocket(conn.url);
     if (ws.OPEN) {
       setConn(ws);
-      // setDevices([]);
-      const pathname = conn.url.split('/')
-      getDevicesInUser(pathname[4]) // TODO: username
-        .then((res) => {
-            console.log(' ...use_get_devices.getDevicesInUser <<<', res.data); // TODO: call 'getDevicesInUser' from join user with 'username'
-            setDevices(res.data.data);
-        });
+      setDevices([]);
+      // const pathname = conn.url.split('/')
+      // getDevicesInUser(pathname[4]) // TODO: username
+      //   .then((res) => {
+      //       console.log(' ...use_get_devices.getDevicesInUser <<<', res.data); // TODO: call 'getDevicesInUser' from join user with 'username'
+      //       setDevices(res.data.data);
+      //   });
     }
   };
+
+    const onUserChange = (e) => {
+        const value = e.target.value;
+        setUsername(value);
+    };
+
+    const joinUser = (username: string) => {
+        const ws = new WebSocket(
+            `${WEBSOCKET_URL}/${username}?id=${jwtClaims.id}&deviceName=${jwtClaims.deviceName}` // TODO: set static data from url-param(s)
+        );
+        if (ws.OPEN) {
+            setConn(ws);
+            router.push('/social-settings'); // TODO: go to social-settings page
+        }
+    };
+
+    const disjoinUser = () => {
+        setJoinStatus('disjoined');
+        setUsername(null);
+        setDevices([]);
+        router.push('/social-settings'); // TODO: go to social-settings page
+    }
 
   if (devices === [] || conn === null) <Loading />;
 
@@ -121,6 +147,22 @@ export default function SocialSettings() {
       <div className="flex flex-col md:flex-row w-full">
         <div className="flex items-center justify-center w-full md:w-9/14">
           <div className="p-4 md:mx-24 mb-14">
+
+              <div className="flex items-center justify-center   md:mx-4 mb-60">
+                  <input className="p-2 border border-dark rounded-md  focus:outline-none border border-dark-primary focus:border-blue"
+                         type="text"
+                         placeholder="username"
+                         onChange={onUserChange}/>
+                  <button className="mt-4 md:mt-0 text-yellow border border-yellow rounded-md p-2 pl-4 pr-4 md:ml-4"
+                          onClick={() => joinUser(username)}>
+                      join
+                  </button>
+                  <button className="mt-4 md:mt-0 text-yellow border border-yellow rounded-md p-2 pl-4 pr-4 md:ml-4"
+                          onClick={() => disjoinUser()}>
+                      disjoin
+                  </button>
+              </div>
+
             <div className="flex items-center justify-center"
                  style={{
                      fontSize: "34px",
@@ -327,10 +369,11 @@ export default function SocialSettings() {
                 </div>
                 <div />
             </div>
+            <div className="flex mt-60" />
           </div>
         </div>
 
-        <div className="md:w-3/6 md:visible invisible flex flex-col border-l-2 border-dark-secondary p-4">
+        <div className="md:w-3/6 md:visible invisible flex flex-col p-4">
           <div className="fixed">
             <OnCloseJoin rejoin={rejoin} joinStatus={joinStatus} />
             <div className="mb-4 text-lg font-bold">sync device(s)</div>
@@ -355,7 +398,7 @@ export function OnCloseJoin({ rejoin, joinStatus }) {
   const joinedStyleOn =  'p-2 px-4 flex flex-row justify-end w-full  bg-green bg-opacity-10 text-green rounded-md';
 
   return (
-    <div className="mb-4 inline-block">
+    <div className="mt-4 mb-4 inline-block">
       <div className={ joinStatus.includes('disjoined') ? joinedStyleErr: joinedStyleOn }>
         <div>{joinStatus}</div>
         {joinStatus.includes('disjoined') && (
