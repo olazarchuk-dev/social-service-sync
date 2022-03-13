@@ -8,10 +8,10 @@ import (
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/olazarchuk-dev/social-service-sync/server/app/config"
-	"github.com/olazarchuk-dev/social-service-sync/server/app/helper"
-	"github.com/olazarchuk-dev/social-service-sync/server/model/api"
 	"golang.org/x/crypto/bcrypt"
+	"social-service-sync/server/app/config"
+	"social-service-sync/server/app/helper"
+	"social-service-sync/server/model/api"
 )
 
 type JwtClaims struct { // TODO: JwtClaims User

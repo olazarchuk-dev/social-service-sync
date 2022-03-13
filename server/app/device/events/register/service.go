@@ -5,10 +5,10 @@ import (
 	"database/sql"
 	"strings"
 
-	"github.com/olazarchuk-dev/social-service-sync/server/app/helper"
-	"github.com/olazarchuk-dev/social-service-sync/server/model/api"
-	"github.com/olazarchuk-dev/social-service-sync/server/model/entity"
 	"golang.org/x/crypto/bcrypt"
+	"social-service-sync/server/app/helper"
+	"social-service-sync/server/model/api"
+	"social-service-sync/server/model/entity"
 )
 
 func Service(db *sql.DB, ctx context.Context, request api.RegisterRequest) *api.RegisterResponse {

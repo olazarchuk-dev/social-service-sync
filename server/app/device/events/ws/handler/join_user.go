@@ -5,7 +5,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
-	"github.com/olazarchuk-dev/social-service-sync/server/app/device/events/ws"
+	"social-service-sync/server/app/device/events/ws"
 )
 
 func JoinUser(hub *ws.Hub) fiber.Handler {

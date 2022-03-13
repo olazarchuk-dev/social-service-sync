@@ -1,4 +1,4 @@
-module github.com/olazarchuk-dev/social-service-sync/server
+module social-service-sync/server
 
 go 1.17
 

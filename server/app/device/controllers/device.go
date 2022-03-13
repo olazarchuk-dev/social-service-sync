@@ -5,11 +5,11 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/olazarchuk-dev/social-service-sync/server/app/device/events/login"
-	"github.com/olazarchuk-dev/social-service-sync/server/app/device/events/register"
-	"github.com/olazarchuk-dev/social-service-sync/server/app/device/events/ws"
-	"github.com/olazarchuk-dev/social-service-sync/server/app/device/events/ws/handler"
-	"github.com/olazarchuk-dev/social-service-sync/server/app/middleware"
+	"social-service-sync/server/app/device/events/login"
+	"social-service-sync/server/app/device/events/register"
+	"social-service-sync/server/app/device/events/ws"
+	"social-service-sync/server/app/device/events/ws/handler"
+	"social-service-sync/server/app/middleware"
 )
 
 func Init(app *fiber.App, db *sql.DB) {

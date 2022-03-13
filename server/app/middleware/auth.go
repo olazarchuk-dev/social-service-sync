@@ -6,8 +6,8 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
-	"github.com/olazarchuk-dev/social-service-sync/server/app/config"
-	"github.com/olazarchuk-dev/social-service-sync/server/model/api"
+	"social-service-sync/server/app/config"
+	"social-service-sync/server/model/api"
 )
 
 func JWTAuth(ctx *fiber.Ctx) error {

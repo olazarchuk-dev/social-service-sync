@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/olazarchuk-dev/social-service-sync/server/model/entity"
+	"social-service-sync/server/model/entity"
 )
 
 func Repository(ctx context.Context, tx *sql.Tx, user entity.Users) (*entity.Users, error) {
