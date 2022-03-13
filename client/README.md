@@ -79,3 +79,7 @@
       ```shell script
       npm install @loadable/component
       ```
+* `Angular get browser name and version`: https://www.npmjs.com/package/bowser
+  ```shell script
+  npm install --save bowser
+  ```

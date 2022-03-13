@@ -1,8 +1,9 @@
 # Social server | settings sync demo
 
 * `Use Application 'Settings sync demo'`: http://localhost:3000/social-settings
-  ![Screenshot-1](img/screenshot_1.png)
-  ![Screenshot-2](img/screenshot_2.png)
+  ![Screenshot-1](img/screenshot_01.png)
+  ![Screenshot-2](img/screenshot_02.png)
+  ![Screenshot-3](img/screenshot_03.png)
 
 
 ---

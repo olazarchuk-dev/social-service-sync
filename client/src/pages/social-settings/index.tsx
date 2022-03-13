@@ -15,6 +15,7 @@ import Spinner from "../../component/spinner";
 import Link from "next/link";
 import {WEBSOCKET_URL} from "../../constants";
 const ReactJson = loadable(() => import('react-json-view'));
+import * as Bowser from 'bowser';
 
 export default function SocialSettings() {
   const [somethings, setSomethings] = useState<Array<Something>>([]);
@@ -58,6 +59,12 @@ export default function SocialSettings() {
 
     conn.onmessage = (messageEvent) => { // TODO: receive remote Something(s)
       const something: Something = JSON.parse(messageEvent.data);
+      something.lastActiveTime = new Date().getTime();
+      const browser = Bowser.getParser(window.navigator.userAgent);
+      something.deviceBrowser = {
+          name: browser.getBrowserName(),
+          version: browser.getBrowserVersion()
+      };
       setSomethingLast(something);
 
       if (something.syncDeviceJoined == 'joined_device') {
