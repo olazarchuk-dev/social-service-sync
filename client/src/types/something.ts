@@ -2,7 +2,7 @@ export type Something = { // TODO: init dynamic data
   id: number;
   deviceName: string;
   syncDeviceJoined: string;
-  currentDeviceBrowser: {};
+  currentDevice: {};
   lastActiveTime: number;
   type: 'recv' | 'self';
   appUsername: string;
