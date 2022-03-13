@@ -61,7 +61,7 @@ export default function SocialSettings() {
       const something: Something = JSON.parse(messageEvent.data);
       something.lastActiveTime = new Date().getTime();
       const browser = Bowser.getParser(window.navigator.userAgent);
-      something.currentDeviceBrowser = {
+      something.currentDevice = {
           name: browser.getBrowserName(),
           version: browser.getBrowserVersion()
       };
