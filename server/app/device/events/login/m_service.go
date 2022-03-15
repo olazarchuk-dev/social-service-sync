@@ -33,18 +33,6 @@ func HandlerGet(request api.LoginRequest) (*entity.User, error) {
 	return &user, nil
 }
 
-//func HandlerGets() {
-//	Setup()
-//
-//	users, err := GetUsers()
-//	if err != nil {
-//		log.Fatal(err)
-//	}
-//	for u, user := range users {
-//		PrintList(u, user)
-//	}
-//}
-
 func ToString(date primitive.Timestamp, layout string) string {
 	uintDate := strconv.FormatUint(uint64(date.T), 10)
 	intDate, err := strconv.ParseInt(uintDate, 10, 64)
@@ -77,8 +65,4 @@ func PrintList(u int, user entity.User) {
 	DeactivatedAt := ToString(user.DeactivatedAt, time.Stamp)
 	fmt.Printf("%v. ID='%v'; Username='%v'; Email='%v'; Password='%v'; CreatedAt='%v'; DeactivatedAt='%v'; \n",
 		u, ID, Username, Email, Password, CreatedAt, DeactivatedAt)
-}
-
-func AddDate(years int, months int, days int) time.Time {
-	return time.Now().AddDate(years, months, days)
 }
