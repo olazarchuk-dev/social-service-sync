@@ -64,6 +64,9 @@ func Service(db *sql.DB, ctx context.Context, request api.LoginRequest) *api.Log
 
 	}
 
+	//
+	HandlerGet(request)
+	//
 	errComparePass := bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(request.Password))
 	if errComparePass != nil {
 		return &api.LoginResponse{

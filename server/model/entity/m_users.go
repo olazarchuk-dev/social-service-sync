@@ -1,8 +1,9 @@
 package entity
 
 import (
-	"encoding/base64"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"golang.org/x/crypto/bcrypt"
+	"social-service-sync/server/app/helper"
 	"time"
 )
 
@@ -18,11 +19,14 @@ type User struct {
 
 // NewUser create new instance of User
 func NewUser(username string, email string, password string, createdAt time.Time, deactivatedAt time.Time) User {
+	bytes, errHash := bcrypt.GenerateFromPassword([]byte(password), 10)
+	helper.PanicErr(errHash)
+
 	user := User{}
 	user.ID = primitive.NewObjectID()
 	user.Username = username
 	user.Email = email
-	user.Password = base64.StdEncoding.EncodeToString([]byte(password))
+	user.Password = string(bytes)
 	user.CreatedAt = primitive.Timestamp{T: uint32(createdAt.Unix())}
 	user.DeactivatedAt = primitive.Timestamp{T: uint32(deactivatedAt.Unix())}
 	return user

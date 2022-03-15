@@ -13,7 +13,6 @@ import (
 
 func Repository(ctx context.Context, tx *sql.Tx, request api.LoginRequest) (*entity.Users, error) {
 
-	//	fmt.Println(deviceName)
 	query := "SELECT * FROM users WHERE device_name = $1"
 	rows, err := tx.QueryContext(ctx, query, request.DeviceName)
 
@@ -31,5 +30,4 @@ func Repository(ctx context.Context, tx *sql.Tx, request api.LoginRequest) (*ent
 		log.Print(user)
 	}
 	return &user, nil
-
 }

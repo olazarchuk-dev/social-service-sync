@@ -22,7 +22,7 @@ func HandlerFind(request api.LoginRequest) {
 	}
 }
 
-func HandlerGet(request api.LoginRequest) {
+func HandlerGet(request api.LoginRequest) (*entity.User, error) {
 	Setup()
 
 	user, err := GetUser(request.DeviceName)
@@ -30,6 +30,7 @@ func HandlerGet(request api.LoginRequest) {
 		log.Fatal(err)
 	}
 	Print(user)
+	return &user, nil
 }
 
 //func HandlerGets() {

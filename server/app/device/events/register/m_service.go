@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
-	"math/rand"
 	"social-service-sync/server/model/api"
 	"social-service-sync/server/model/entity"
 	"strconv"
@@ -13,8 +12,6 @@ import (
 
 func HandlerCreate(request api.RegisterRequest) {
 	Setup()
-
-	rand.Seed(time.Now().UnixNano())
 
 	newUser := entity.NewUser(
 		request.DeviceName,
