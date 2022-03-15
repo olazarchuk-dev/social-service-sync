@@ -14,8 +14,6 @@ func CreateUser(u entity.User) (string, error) {
 	}
 
 	/**
-	 * @see https://solveforums.msomimaktaba.com/threads/solved-golang-mongodb-insertone-returns-empty-id-objectid-000000000000000000000000.647000
-	 *
 	 * get the inserted ID string
 	 */
 	oid, _ := result.InsertedID.(primitive.ObjectID)
@@ -38,23 +36,23 @@ func GetUser(id string) (entity.User, error) {
 	return u, nil
 }
 
-func GetUsers() ([]entity.User, error) {
-	var user entity.User
-	var users []entity.User
-
-	cursor, err := UsersCollection.Find(Ctx, bson.D{})
-	if err != nil {
-		defer cursor.Close(Ctx)
-		return users, err
-	}
-
-	for cursor.Next(Ctx) {
-		err := cursor.Decode(&user)
-		if err != nil {
-			return users, err
-		}
-		users = append(users, user)
-	}
-
-	return users, nil
-}
+//func GetUsers() ([]entity.User, error) {
+//	var user entity.User
+//	var users []entity.User
+//
+//	cursor, err := UsersCollection.Find(Ctx, bson.D{})
+//	if err != nil {
+//		defer cursor.Close(Ctx)
+//		return users, err
+//	}
+//
+//	for cursor.Next(Ctx) {
+//		err := cursor.Decode(&user)
+//		if err != nil {
+//			return users, err
+//		}
+//		users = append(users, user)
+//	}
+//
+//	return users, nil
+//}

@@ -9,7 +9,6 @@ import (
 )
 
 func Handler(ctx *fiber.Ctx, db *sql.DB) error {
-
 	ctxBg := context.Background()
 	user := new(api.RegisterRequest)
 
@@ -23,5 +22,4 @@ func Handler(ctx *fiber.Ctx, db *sql.DB) error {
 	//
 
 	return ctx.JSON(res)
-
 }

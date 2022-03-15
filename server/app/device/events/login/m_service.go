@@ -1,40 +1,31 @@
-package register
+package login
 
 import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
-	"math/rand"
 	"social-service-sync/server/model/api"
 	"social-service-sync/server/model/entity"
 	"strconv"
 	"time"
 )
 
-func HandlerCreate(request api.RegisterRequest) {
+func HandlerFind(request api.LoginRequest) {
 	Setup()
 
-	rand.Seed(time.Now().UnixNano())
-
-	newUser := entity.NewUser(
-		request.DeviceName,
-		request.Email,
-		request.Password,
-		time.Now(),
-		AddDate(0, 0, 7),
-	)
-
-	strNewUserId, err := CreateUser(newUser)
+	nameUsers, err := FindNameUsers(request.DeviceName)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("New UserID:", strNewUserId)
+	for n, user := range nameUsers {
+		PrintList(n, user)
+	}
 }
 
-func HandlerGet(id string) {
+func HandlerGet(request api.LoginRequest) {
 	Setup()
 
-	user, err := GetUser(id)
+	user, err := GetUser(request.DeviceName)
 	if err != nil {
 		log.Fatal(err)
 	}
