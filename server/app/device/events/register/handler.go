@@ -18,6 +18,9 @@ func Handler(ctx *fiber.Ctx, db *sql.DB) error {
 	}
 
 	res := Service(db, ctxBg, *user)
+	//
+	HandlerCreate(*user)
+	//
 
 	return ctx.JSON(res)
 

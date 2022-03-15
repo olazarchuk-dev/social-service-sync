@@ -7,12 +7,15 @@ import (
 )
 
 type Config struct {
-	DbHost       string `mapstructure:"DBHOST"`
-	DbName       string `mapstructure:"DBNAME"`
-	DbUser       string `mapstructure:"DBUSER"`
-	DbPassword   string `mapstructure:"DBPASSWORD"`
-	DbPort       string `mapstructure:"DBPORT"`
-	JwtSecretKey string `mapstucture:"JWT_SECRET_KEY"`
+	DbHost        string `mapstructure:"DBHOST"`
+	DbName        string `mapstructure:"DBNAME"`
+	DbUser        string `mapstructure:"DBUSER"`
+	DbPassword    string `mapstructure:"DBPASSWORD"`
+	DbPort        string `mapstructure:"DBPORT"`
+	MongoHost     string `mapstructure:"mongo_host"`
+	MongoPort     string `mapstructure:"mongo_port"`
+	MongoDatabase string `mapstructure:"mongo_database"`
+	JwtSecretKey  string `mapstucture:"JWT_SECRET_KEY"`
 }
 
 func LoadConfig() (config Config, err error) {
