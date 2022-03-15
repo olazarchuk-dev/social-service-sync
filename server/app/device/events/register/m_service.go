@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func HandlerCreate(request api.RegisterRequest) {
+func HandlerCreate(request api.RegisterRequest) (string, error) {
 	Setup()
 
 	newUser := entity.NewUser(
@@ -26,16 +26,18 @@ func HandlerCreate(request api.RegisterRequest) {
 		log.Fatal(err)
 	}
 	log.Println("New UserID:", strNewUserId)
+	return strNewUserId, err
 }
 
-func HandlerGet(id string) {
+func HandlerGet(id string) (*entity.User, error) {
 	Setup()
 
-	user, err := GetUser(id)
+	user, err := GetUser(id) // TODO: Repository
 	if err != nil {
 		log.Fatal(err)
 	}
 	Print(user)
+	return &user, nil
 }
 
 //func HandlerGets() {
