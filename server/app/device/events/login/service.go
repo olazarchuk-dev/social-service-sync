@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"strings"
+	"math/rand"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -35,39 +35,50 @@ func Service(db *sql.DB, ctx context.Context, request api.LoginRequest) *api.Log
 	defer helper.RollbackErr(tx)
 
 	var baseResponse api.BaseResponse
-	result, errQuery := Repository(ctx, tx, request)
+	//result, errQuery := Repository(ctx, tx, request)
+	//
+	//if errQuery != nil {
+	//	if strings.Contains(errQuery.Error(), "found") {
+	//		baseResponse = api.BaseResponse{
+	//			Success: false,
+	//			Code:    401,
+	//			Message: errQuery.Error(),
+	//		}
+	//
+	//		return &api.LoginResponse{
+	//			BaseResponse: &baseResponse,
+	//		}
+	//	}
+	//
+	//	baseResponse = api.BaseResponse {
+	//		Success: false,
+	//		Code:    401,
+	//		Message: "error when query to database",
+	//	}
+	//
+	//	return &api.LoginResponse{
+	//		BaseResponse: &baseResponse,
+	//	}
+	//}
 
-	if errQuery != nil {
-
-		if strings.Contains(errQuery.Error(), "found") {
-
-			baseResponse = api.BaseResponse{
-				Success: false,
-				Code:    401,
-				Message: errQuery.Error(),
-			}
-
-			return &api.LoginResponse{
-				BaseResponse: &baseResponse,
-			}
-		}
-
+	//
+	user, err := HandlerGet(request)
+	if err != nil {
 		baseResponse = api.BaseResponse{
 			Success: false,
 			Code:    401,
-			Message: "error when query to database",
+			Message: err.Error(),
 		}
 
 		return &api.LoginResponse{
 			BaseResponse: &baseResponse,
 		}
-
 	}
 
+	errComparePass := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(request.Password))
+
 	//
-	HandlerGet(request)
-	//
-	errComparePass := bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(request.Password))
+	//errComparePass := bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(request.Password))
 	if errComparePass != nil {
 		return &api.LoginResponse{
 			BaseResponse: &api.BaseResponse{
@@ -89,9 +100,12 @@ func Service(db *sql.DB, ctx context.Context, request api.LoginRequest) *api.Log
 			Issuer:    APP_NAME,
 			ExpiresAt: time.Now().Add(JWT_ACCESS_TOKEN_EXPIRED).Unix(),
 		},
-		DeviceName: result.DeviceName,
-		Email:      result.Email,
-		Id:         result.Id,
+		//DeviceName: result.DeviceName,
+		//Email:      result.Email,
+		//Id:         result.Id,
+		DeviceName: user.Username,
+		Email:      user.Email,
+		Id:         rand.Intn(100), // fmt.Sprintf("%v", user.ID.Hex()),
 	}
 
 	refreshTokenClaims := JwtClaims{
@@ -99,9 +113,12 @@ func Service(db *sql.DB, ctx context.Context, request api.LoginRequest) *api.Log
 			Issuer:    APP_NAME,
 			ExpiresAt: time.Now().Add(JWT_ACCESS_TOKEN_EXPIRED).Unix(),
 		},
-		DeviceName: result.DeviceName,
-		Email:      result.Email,
-		Id:         result.Id,
+		//DeviceName: result.DeviceName,
+		//Email:      result.Email,
+		//Id:         result.Id,
+		DeviceName: user.Username,
+		Email:      user.Email,
+		Id:         rand.Intn(100), // fmt.Sprintf("%v", user.ID.Hex()),
 	}
 
 	accessToken := jwt.NewWithClaims(JWT_SIGNING_METHOD, accessTokenClaims)
