@@ -58,6 +58,9 @@ func (hub *Hub) Run() {
 				for _, wsService := range hub.Users[something.Username].WsServices {
 					if wsService.Username == something.Username {
 						wsService.Something <- something // TODO: Websocket.Connect: Id, Username, DeviceName, SyncDeviceJoined;  ||  App (settings): AppUsername, AppEmailAddress, AppAlignedCb, AppBillingPeriod, AppSalary;
+						//
+						UpdateSocialSetting("623206f40d8ab7ac0d59d62e", something.AppUsername, something.AppEmailAddress, something.AppAlignedCb, something.AppBillingPeriod, something.AppSalary)
+						//
 						fmt.Println(" ...Hub.Broadcast something <<<",
 							"(Conn) Id='"+something.Id+"'",
 							"(Conn) Username='"+something.Username+"'",

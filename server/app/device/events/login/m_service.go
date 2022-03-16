@@ -11,8 +11,6 @@ import (
 )
 
 func HandlerFind(request api.LoginRequest) {
-	Setup()
-
 	nameUsers, err := FindNameUsers(request.DeviceName)
 	if err != nil {
 		log.Fatal(err)
@@ -23,8 +21,6 @@ func HandlerFind(request api.LoginRequest) {
 }
 
 func HandlerGet(request api.LoginRequest) (*entity.User, error) {
-	Setup()
-
 	user, err := GetUser(request.DeviceName) // TODO: Repository
 	if err != nil {
 		log.Fatal(err)

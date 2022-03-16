@@ -11,8 +11,6 @@ import (
 )
 
 func HandlerCreate(request api.RegisterRequest) (string, error) {
-	Setup()
-
 	newUser := entity.NewUser(
 		request.DeviceName,
 		request.Email,
@@ -30,8 +28,6 @@ func HandlerCreate(request api.RegisterRequest) (string, error) {
 }
 
 func HandlerGet(id string) (*entity.User, error) {
-	Setup()
-
 	user, err := GetUser(id) // TODO: Repository
 	if err != nil {
 		log.Fatal(err)
