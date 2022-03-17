@@ -23,6 +23,8 @@ export default function SocialSettings() {
   const deviceJoinedVal = useRef(null);
   const usernameVal = useRef(null);
   const emailAddressVal = useRef(null);
+  const currentDeviceVal = useRef({value: {}});
+  const lastModifiedAtVal = useRef({value: 0});
   const alignedCbCheck = useRef(null);
   const [billingPeriodVal, setBillingPeriodVal] = useState({values: [3]});
   const syncBillingPeriodVal = useRef({values: [3]});
@@ -59,12 +61,14 @@ export default function SocialSettings() {
 
     conn.onmessage = (messageEvent) => { // TODO: receive remote Something(s)
       const something: Something = JSON.parse(messageEvent.data);
-      something.lastActiveTime = new Date().getTime();
       const browser = Bowser.getParser(window.navigator.userAgent);
       something.currentDevice = {
           name: browser.getBrowserName(),
           version: browser.getBrowserVersion()
       };
+      currentDeviceVal.current.value = something.currentDevice
+      something.lastModifiedAt = new Date().getTime()
+      lastModifiedAtVal.current.value = something.lastModifiedAt
       setSomethingLast(something);
 
       if (something.syncDeviceJoined == 'joined_device') {
@@ -88,7 +92,7 @@ export default function SocialSettings() {
       setSomethings([...somethings, something]);
       console.log(' ...app.useEffect: conn.onmessage (somethings) <<<', somethings)
     }
-  }, [conn, devices, somethings, deviceJoinedVal, usernameVal, emailAddressVal]);
+  }, [conn, devices, somethings, deviceJoinedVal, usernameVal, emailAddressVal, currentDeviceVal, lastModifiedAtVal]);
 
   const sendSomething = () => {
     let data = {
@@ -98,6 +102,8 @@ export default function SocialSettings() {
       appAlignedCb: alignedCbCheck.current.checked,
       appBillingPeriod: syncBillingPeriodVal.current.values[0],
       appSalary: syncSalaryVal.current.values[0],
+      currentDevice: currentDeviceVal.current.value,
+      lastModifiedAt: lastModifiedAtVal.current.value,
     }
 
     console.log(' ...app.send: data (somethings) >>>', data);
