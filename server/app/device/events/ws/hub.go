@@ -59,13 +59,15 @@ func (hub *Hub) Run() {
 					if wsService.Username == something.Username {
 						wsService.Something <- something // TODO: Websocket.Connect: Id, Username, DeviceName, SyncDeviceJoined;  ||  App (settings): AppUsername, AppEmailAddress, AppAlignedCb, AppBillingPeriod, AppSalary;
 						//
-						UpdateSocialSetting("623206f40d8ab7ac0d59d62e", something.AppUsername, something.AppEmailAddress, something.AppAlignedCb, something.AppBillingPeriod, something.AppSalary)
+						UpdateSocialSetting("623206f40d8ab7ac0d59d62e", something.AppUsername, something.AppEmailAddress, something.AppAlignedCb, something.AppBillingPeriod, something.AppSalary, something.CurrentDevice, something.LastModifiedAt)
 						//
 						fmt.Println(" ...Hub.Broadcast something <<<",
 							"(Conn) Id='"+something.Id+"'",
 							"(Conn) Username='"+something.Username+"'",
 							"(Conn) DeviceName='"+something.DeviceName+"'",
 							"(Sync) SyncDeviceJoined='"+something.SyncDeviceJoined+"'",
+							"(Sync) Device.Name='"+something.CurrentDevice.Name+"';  Device.Version='"+something.CurrentDevice.Version+"';",
+							"(Sync) LastModifiedAt='"+strconv.Itoa(something.LastModifiedAt)+"'",
 							"(App) Username='"+something.AppUsername+"'",
 							"(App) EmailAddress='"+something.AppEmailAddress+"'",
 							"(App) AlignedCb='"+strconv.FormatBool(something.AppAlignedCb)+"'",

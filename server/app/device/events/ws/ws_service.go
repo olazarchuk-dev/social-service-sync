@@ -57,6 +57,8 @@ func (wsService *WsService) ReadSomething(hub *Hub) {
 			Username:         wsService.Username,
 			DeviceName:       wsService.DeviceName,
 			SyncDeviceJoined: some.SyncDeviceJoined,
+			CurrentDevice:    some.CurrentDevice,
+			LastModifiedAt:   some.LastModifiedAt,
 			AppUsername:      some.AppUsername,
 			AppEmailAddress:  some.AppEmailAddress,
 			AppBillingPeriod: some.AppBillingPeriod,
