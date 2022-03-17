@@ -28,6 +28,8 @@ func JoinUser(hub *ws.Hub) fiber.Handler {
 			Username:         wsService.Username,
 			DeviceName:       wsService.DeviceName,
 			SyncDeviceJoined: "joined_device", // TODO: [one special] sync joined device(s) by user
+			//CurrentDevice:    nil,
+			//LastModifiedAt:    0,
 			AppUsername:      "",
 			AppEmailAddress:  "",
 			AppAlignedCb:     false,

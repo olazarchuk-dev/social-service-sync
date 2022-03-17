@@ -18,12 +18,10 @@ func CreateSocialSetting(u entity.SocialSetting) (string, error) {
 	return fmt.Sprintf("%v", oid.Hex()), err
 }
 
-//func UpdateSocialSetting(id primitive.ObjectID, username string, email string, alignedCb bool, billingPeriod int, salary int, currentDevice entity.Device) error {
-func UpdateSocialSetting(id string, username string, email string, alignedCb bool, billingPeriod int, salary int) error {
+func UpdateSocialSetting(id string, username string, email string, alignedCb bool, billingPeriod int, salary int, currentDevice Device, lastModifiedAt int) error {
 	objectId, errFound := primitive.ObjectIDFromHex(id)
 	helper.PanicErr(errFound)
 
-	//filter := bson.D{{"_id", id}}
 	filter := bson.D{{"_id", objectId}}
 	update := bson.D{
 		{"$set", bson.D{{"username", username}}},
@@ -31,7 +29,8 @@ func UpdateSocialSetting(id string, username string, email string, alignedCb boo
 		{"$set", bson.D{{"aligned_cb", alignedCb}}},
 		{"$set", bson.D{{"billing_period", billingPeriod}}},
 		{"$set", bson.D{{"salary", salary}}},
-		//{"$set", bson.D{{"current_device", currentDevice}}},
+		{"$set", bson.D{{"current_device", currentDevice}}},
+		{"$set", bson.D{{"last_modified_at", primitive.Timestamp{T: uint32(lastModifiedAt)}}}},
 	}
 	_, err := SocialSettingsCollection.UpdateOne(Ctx, filter, update)
 	return err
