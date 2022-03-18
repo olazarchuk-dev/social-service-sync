@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-//SocialSetting is the structure we work with
 type SocialSetting struct {
 	ID             primitive.ObjectID  `bson:"_id" json:"_id"`
 	Username       string              `json:"username" gorm:"unique" bson:"username,omitempty"`
