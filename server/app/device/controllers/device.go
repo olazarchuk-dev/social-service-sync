@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"database/sql"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,7 +12,7 @@ import (
 	"social-service-sync/server/app/middleware"
 )
 
-func Init(app *fiber.App, db *sql.DB, mongoDb *mongo.Database) {
+func Init(app *fiber.App, mongoDb *mongo.Database) {
 
 	m := ws.NewMongo(mongoDb)
 	hub := ws.NewHub()

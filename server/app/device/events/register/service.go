@@ -22,16 +22,15 @@ func Service(mongoDb *mongo.Database, ctx context.Context, request api.RegisterR
 		entity.AddDate(0, 0, 7),
 	)
 
-	id, err := CreateUser(ctx, collection, newUser)
+	id, err := RepositoryCreate(ctx, collection, newUser)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	result, err := GetUser(ctx, collection, id) // TODO: Repository
+	result, err := RepositoryGet(ctx, collection, id) // TODO: Repository
 	if err != nil {
 		log.Fatal(err)
 	}
-	//entity.PrintUser(result)
 
 	var baseResponse api.BaseResponse
 	if err != nil {

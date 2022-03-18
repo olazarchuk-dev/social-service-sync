@@ -1,23 +1,39 @@
 package register
 
-//import (
-//	"context"
-//	"database/sql"
-//
-//	"social-service-sync/server/model/entity"
-//)
-//
-//func Repository(ctx context.Context, tx *sql.Tx, user entity.Users) (*entity.Users, error) {
-//
-//	var lastInsertId int
-//	query := "INSERT INTO users(device_name, password, email, image) VALUES($1, $2, $3, $4) returning id"
-//	err := tx.QueryRowContext(ctx, query, user.DeviceName, user.Password, user.Email, user.Image).Scan(&lastInsertId)
-//
-//	if err != nil {
-//		return &entity.Users{}, err
-//	}
-//
-//	user.Id = lastInsertId
-//	return &user, nil
-//
-//}
+import (
+	"context"
+	"fmt"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+	"social-service-sync/server/model/entity"
+)
+
+func RepositoryCreate(ctx context.Context, collection *mongo.Collection, user entity.User) (string, error) {
+	result, err := collection.InsertOne(ctx, user)
+	if err != nil {
+		return "0", err
+	}
+
+	/**
+	 * get the inserted ID string
+	 */
+	oid, _ := result.InsertedID.(primitive.ObjectID)
+	return fmt.Sprintf("%v", oid.Hex()), err
+}
+
+func RepositoryGet(ctx context.Context, collection *mongo.Collection, id string) (entity.User, error) {
+	var u entity.User
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return u, err
+	}
+
+	err = collection.
+		FindOne(ctx, bson.D{{"_id", objectId}}).
+		Decode(&u)
+	if err != nil {
+		return u, err
+	}
+	return u, nil
+}

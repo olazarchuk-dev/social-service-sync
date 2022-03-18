@@ -12,7 +12,7 @@ import (
 func Run() {
 
 	app := fiber.New()
-	db := DbConn()
+	//db := DbConn()
 	mongoDb := MongoConn()
 	m := ws.NewMongo(mongoDb)
 	hub := ws.NewHub()
@@ -22,7 +22,7 @@ func Run() {
 	app.Use(logger.New())
 	app.Use(recover.New())
 
-	controllers.Init(app, db, mongoDb)
+	controllers.Init(app, mongoDb)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.JSON("hello internet")

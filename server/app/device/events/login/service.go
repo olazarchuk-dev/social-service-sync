@@ -32,8 +32,8 @@ func Service(mongoDb *mongo.Database, ctx context.Context, request api.LoginRequ
 
 	collection := mongoDb.Collection("users")
 
-	result, err := GetUser(ctx, collection, request.DeviceName) // TODO: Repository
-	//results, err := FindNameUsers(ctx, collection, request.DeviceName)// TODO: Repository
+	result, err := RepositoryGet(ctx, collection, request.DeviceName) // TODO: Repository
+	//results, err := RepositoryFindByName(ctx, collection, request.DeviceName) // TODO: Repository
 	if err != nil {
 		log.Fatal(err)
 	}

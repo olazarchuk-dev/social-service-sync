@@ -1,33 +1,45 @@
 package login
 
-//import (
-//	"context"
-//	"database/sql"
-//	"fmt"
-//	"log"
-//	"social-service-sync/server/model/api"
-//
-//	"social-service-sync/server/app/helper"
-//	"social-service-sync/server/model/entity"
-//)
-//
-//func Repository(ctx context.Context, tx *sql.Tx, request api.LoginRequest) (*entity.Users, error) {
-//
-//	query := "SELECT * FROM users WHERE device_name = $1"
-//	rows, err := tx.QueryContext(ctx, query, request.DeviceName)
-//
-//	helper.PanicErr(err)
-//
-//	var user entity.Users
-//
-//	defer rows.Close()
-//	for rows.Next() {
-//		err := rows.Scan(&user.Id, &user.DeviceName, &user.Password, &user.Email, &user.Image)
-//		if err != nil {
-//			fmt.Println(err)
-//			return new(entity.Users), err
-//		}
-//		log.Print(user)
-//	}
-//	return &user, nil
-//}
+import (
+	"context"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"social-service-sync/server/model/entity"
+)
+
+type NameUsers struct {
+	Name  string `bson:"username"`
+	Users []entity.User
+}
+
+func RepositoryGet(ctx context.Context, collection *mongo.Collection, username string) (entity.User, error) {
+	var u entity.User
+	err := collection.
+		FindOne(ctx, bson.D{{"username", username}}).
+		Decode(&u)
+	if err != nil {
+		return u, err
+	}
+	return u, nil
+}
+
+func RepositoryFindByName(ctx context.Context, collection *mongo.Collection, name string) ([]entity.User, error) {
+	matchStage := bson.D{{"$match", bson.D{{"name", name}}}}
+
+	lookupStage := bson.D{{"$lookup",
+		bson.D{{"from", "users"},
+			{"localField", "name"},
+			{"foreignField", "username"},
+			{"as", "users"}}}}
+
+	showLoadedCursor, err := collection.Aggregate(ctx, mongo.Pipeline{matchStage, lookupStage})
+	if err != nil {
+		return nil, err
+	}
+
+	var a []NameUsers
+	if err = showLoadedCursor.All(ctx, &a); err != nil { // https://jira.mongodb.org/browse/GODRIVER-1129
+		return nil, err
+	}
+	return a[0].Users, err
+}
