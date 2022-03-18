@@ -8,7 +8,7 @@ import (
 	"social-service-sync/server/model/api"
 )
 
-func Handler(ctx *fiber.Ctx, mongoDb *mongo.Database) error {
+func Handler(ctx *fiber.Ctx, db *mongo.Database) error {
 	ctxBg := context.TODO()
 	user := new(api.RegisterRequest)
 
@@ -16,7 +16,7 @@ func Handler(ctx *fiber.Ctx, mongoDb *mongo.Database) error {
 		panic(err)
 	}
 
-	res := Service(mongoDb, ctxBg, *user)
+	res := Service(db, ctxBg, *user)
 
 	return ctx.JSON(res)
 }

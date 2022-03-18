@@ -1,40 +1,46 @@
 package app
 
-//import (
-//	"database/sql"
-//	"fmt"
-//	"log"
-//
-//	_ "github.com/lib/pq"
-//	"social-service-sync/server/app/config"
-//)
-//
-//var db *sql.DB
-//
-//func init() {
-//
-//	defer func() {
-//		if r := recover(); r != nil {
-//			fmt.Println("recovered in f", r)
-//		}
-//	}()
-//
-//	config, err := config.LoadConfig()
-//	if err != nil {
-//		log.Fatal(err)
-//	}
-//
-//	dbUri := fmt.Sprintf("host=%s user=%s password=%s port=%s dbname=%s sslmode=disable", config.DbHost, config.DbUser, config.DbPassword, config.DbPort, config.DbName)
-//	fmt.Println(dbUri)
-//
-//	conn, err := sql.Open("postgres", dbUri)
-//	if err != nil {
-//		log.Fatal(err)
-//	}
-//
-//	db = conn
-//}
-//
-//func DbConn() *sql.DB {
-//	return db
-//}
+import (
+	"context"
+	"fmt"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
+	"social-service-sync/server/app/config"
+)
+
+var (
+	db  *mongo.Database
+	ctx = context.TODO()
+)
+
+func init() {
+
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("recovered in f", r)
+		}
+	}()
+
+	config, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	connectionURI := "mongodb://" + config.MongoHost + ":" + config.MongoPort + "/"
+	clientOptions := options.Client().ApplyURI(connectionURI)
+	client, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = client.Ping(ctx, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	db = client.Database(config.MongoDatabase)
+}
+
+func DbConn() *mongo.Database {
+	return db
+}

@@ -10,9 +10,9 @@ type Mongo struct {
 	Collection *mongo.Collection `json:"collection"`
 }
 
-func NewMongo(mongoDb *mongo.Database) *Mongo {
+func NewMongo(db *mongo.Database) *Mongo {
 	return &Mongo{
 		Ctx:        context.TODO(),
-		Collection: mongoDb.Collection("social_settings"),
+		Collection: db.Collection("social_settings"),
 	}
 }

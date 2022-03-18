@@ -12,18 +12,18 @@ import (
 	"social-service-sync/server/app/middleware"
 )
 
-func Init(app *fiber.App, mongoDb *mongo.Database) {
+func Init(app *fiber.App, db *mongo.Database) {
 
-	m := ws.NewMongo(mongoDb)
+	m := ws.NewMongo(db)
 	hub := ws.NewHub()
 	go hub.Run(m)
 
 	app.Post("/register", func(ctx *fiber.Ctx) error {
-		return register.Handler(ctx, mongoDb)
+		return register.Handler(ctx, db)
 	})
 
 	app.Post("/login", func(ctx *fiber.Ctx) error {
-		return login.Handler(ctx, mongoDb)
+		return login.Handler(ctx, db)
 	})
 
 	app.Post("/ws", middleware.JWTAuth, func(ctx *fiber.Ctx) error {

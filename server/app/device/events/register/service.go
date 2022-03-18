@@ -10,9 +10,9 @@ import (
 	"time"
 )
 
-func Service(mongoDb *mongo.Database, ctx context.Context, request api.RegisterRequest) *api.RegisterResponse {
+func Service(db *mongo.Database, ctx context.Context, request api.RegisterRequest) *api.RegisterResponse {
 
-	collection := mongoDb.Collection("users")
+	collection := db.Collection("users")
 
 	newUser := entity.NewUser(
 		request.DeviceName,

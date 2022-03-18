@@ -28,9 +28,9 @@ var (
 	JWT_ACCESS_TOKEN_EXPIRED = time.Duration(30) * (time.Hour * 24)
 )
 
-func Service(mongoDb *mongo.Database, ctx context.Context, request api.LoginRequest) *api.LoginResponse {
+func Service(db *mongo.Database, ctx context.Context, request api.LoginRequest) *api.LoginResponse {
 
-	collection := mongoDb.Collection("users")
+	collection := db.Collection("users")
 
 	result, err := RepositoryGet(ctx, collection, request.DeviceName) // TODO: Repository
 	//results, err := RepositoryFindByName(ctx, collection, request.DeviceName) // TODO: Repository
