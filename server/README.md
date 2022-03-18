@@ -15,3 +15,20 @@
 ```shell script
 > go build main.go
 ```
+
+
+---
+
+#### Import cycle not allowed
+
+* https://stackoverflow.com/questions/28256923/import-cycle-not-allowed
+
+Here is an illustration of your first import cycle problem:
+```text
+                  project/controllers/account
+                     ^                    \    
+                    /                      \
+                   /                        \ 
+                 \/                         \/
+         project/components/mux <--- project/controllers/base
+```
