@@ -60,8 +60,8 @@ func (hub *Hub) Run(m *Mongo) {
 						wsService.Something <- something // TODO: Websocket.Connect: Id, Username, DeviceName, SyncDeviceJoined;  ||  App (settings): AppUsername, AppEmailAddress, AppAlignedCb, AppBillingPeriod, AppSalary;
 						//
 						//m := <-hub.Mongo
-						//UpdateSocialSetting(<-hub.Mongo, "623206f40d8ab7ac0d59d62e", something.AppUsername, something.AppEmailAddress, something.AppAlignedCb, something.AppBillingPeriod, something.AppSalary, something.CurrentDevice, something.LastModifiedAt)
-						UpdateSocialSetting(m, "623206f40d8ab7ac0d59d62e", something.AppUsername, something.AppEmailAddress, something.AppAlignedCb, something.AppBillingPeriod, something.AppSalary, something.CurrentDevice, something.LastModifiedAt)
+						//RepositoryUpdate(<-hub.Mongo, "623206f40d8ab7ac0d59d62e", something)
+						RepositoryUpdate(m, "623206f40d8ab7ac0d59d62e", something)
 						//
 						fmt.Println(" ...Hub.Broadcast something <<<",
 							"(Conn) Id='"+something.Id+"'",

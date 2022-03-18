@@ -29,7 +29,7 @@ func Run() {
 
 	//
 	//newSocialSetting := entity.NewSocialSetting("", "", false, 0, 0, time.Now(), entity.NewDevice("", ""))
-	//socialSettingId, err := handler.CreateSocialSetting(newSocialSetting)
+	//socialSettingId, err := ws.RepositoryCreate(newSocialSetting)
 	//if err != nil {
 	//	log.Fatal(err)
 	//}
