@@ -1,14 +1,16 @@
 package register
 
 import (
+	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"social-service-sync/server/model/entity"
 )
 
-func CreateUser(u entity.User) (string, error) {
-	result, err := UsersCollection.InsertOne(Ctx, u)
+func CreateUser(ctx context.Context, collection *mongo.Collection, user entity.User) (string, error) {
+	result, err := collection.InsertOne(ctx, user)
 	if err != nil {
 		return "0", err
 	}
@@ -20,15 +22,15 @@ func CreateUser(u entity.User) (string, error) {
 	return fmt.Sprintf("%v", oid.Hex()), err
 }
 
-func GetUser(id string) (entity.User, error) {
+func GetUser(ctx context.Context, collection *mongo.Collection, id string) (entity.User, error) {
 	var u entity.User
 	objectId, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return u, err
 	}
 
-	err = UsersCollection.
-		FindOne(Ctx, bson.D{{"_id", objectId}}).
+	err = collection.
+		FindOne(ctx, bson.D{{"_id", objectId}}).
 		Decode(&u)
 	if err != nil {
 		return u, err

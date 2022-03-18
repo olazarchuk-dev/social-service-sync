@@ -1,8 +1,10 @@
 package register
 
 import (
+	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"social-service-sync/server/model/api"
 	"social-service-sync/server/model/entity"
@@ -10,7 +12,7 @@ import (
 	"time"
 )
 
-func HandlerCreate(request api.RegisterRequest) (string, error) {
+func HandlerCreate(ctx context.Context, collection *mongo.Collection, request api.RegisterRequest) (string, error) {
 	newUser := entity.NewUser(
 		request.DeviceName,
 		request.Email,
@@ -19,7 +21,7 @@ func HandlerCreate(request api.RegisterRequest) (string, error) {
 		AddDate(0, 0, 7),
 	)
 
-	strNewUserId, err := CreateUser(newUser)
+	strNewUserId, err := CreateUser(ctx, collection, newUser)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -27,8 +29,8 @@ func HandlerCreate(request api.RegisterRequest) (string, error) {
 	return strNewUserId, err
 }
 
-func HandlerGet(id string) (*entity.User, error) {
-	user, err := GetUser(id) // TODO: Repository
+func HandlerGet(ctx context.Context, collection *mongo.Collection, id string) (*entity.User, error) {
+	user, err := GetUser(ctx, collection, id) // TODO: Repository
 	if err != nil {
 		log.Fatal(err)
 	}

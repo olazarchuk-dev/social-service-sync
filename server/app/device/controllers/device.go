@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"database/sql"
+	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/gofiber/fiber/v2"
 
@@ -12,17 +13,18 @@ import (
 	"social-service-sync/server/app/middleware"
 )
 
-func Init(app *fiber.App, db *sql.DB) {
+func Init(app *fiber.App, db *sql.DB, mongoDb *mongo.Database) {
 
+	m := ws.NewMongo(mongoDb)
 	hub := ws.NewHub()
-	go hub.Run()
+	go hub.Run(m)
 
 	app.Post("/register", func(ctx *fiber.Ctx) error {
-		return register.Handler(ctx, db)
+		return register.Handler(ctx, db, mongoDb)
 	})
 
 	app.Post("/login", func(ctx *fiber.Ctx) error {
-		return login.Handler(ctx, db)
+		return login.Handler(ctx, db, mongoDb)
 	})
 
 	app.Post("/ws", middleware.JWTAuth, func(ctx *fiber.Ctx) error {

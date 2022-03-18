@@ -3,17 +3,17 @@ package register
 import (
 	"context"
 	"database/sql"
+	"go.mongodb.org/mongo-driver/mongo"
 	"math/rand"
-	"social-service-sync/server/app/helper"
 	"social-service-sync/server/model/api"
 )
 
-func Service(db *sql.DB, ctx context.Context, request api.RegisterRequest) *api.RegisterResponse {
+func Service(db *sql.DB, mongoDb *mongo.Database, ctx context.Context, request api.RegisterRequest) *api.RegisterResponse {
 
-	tx, err := db.Begin()
-	helper.PanicErr(err)
-	defer helper.RollbackErr(tx)
-
+	//tx, err := db.Begin()
+	//helper.PanicErr(err)
+	//defer helper.RollbackErr(tx)
+	//
 	//bytes, errHash := bcrypt.GenerateFromPassword([]byte(request.Password), 10)
 	//helper.PanicErr(errHash)
 	//
@@ -53,8 +53,10 @@ func Service(db *sql.DB, ctx context.Context, request api.RegisterRequest) *api.
 	//}
 
 	//
-	id, err := HandlerCreate(request)
-	user, err := HandlerGet(id)
+	collection := mongoDb.Collection("users")
+
+	id, err := HandlerCreate(ctx, collection, request)
+	user, err := HandlerGet(ctx, collection, id)
 	if err != nil {
 		baseResponse = api.BaseResponse{
 			Success: false,

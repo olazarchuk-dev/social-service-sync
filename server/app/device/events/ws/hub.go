@@ -12,7 +12,7 @@ type Hub struct {
 	Users      map[string]*User // TODO: JoinUser
 }
 
-func (hub *Hub) Run() {
+func (hub *Hub) Run(m *Mongo) {
 	for {
 		select {
 		// Register case
@@ -59,7 +59,9 @@ func (hub *Hub) Run() {
 					if wsService.Username == something.Username {
 						wsService.Something <- something // TODO: Websocket.Connect: Id, Username, DeviceName, SyncDeviceJoined;  ||  App (settings): AppUsername, AppEmailAddress, AppAlignedCb, AppBillingPeriod, AppSalary;
 						//
-						UpdateSocialSetting("623206f40d8ab7ac0d59d62e", something.AppUsername, something.AppEmailAddress, something.AppAlignedCb, something.AppBillingPeriod, something.AppSalary, something.CurrentDevice, something.LastModifiedAt)
+						//m := <-hub.Mongo
+						//UpdateSocialSetting(<-hub.Mongo, "623206f40d8ab7ac0d59d62e", something.AppUsername, something.AppEmailAddress, something.AppAlignedCb, something.AppBillingPeriod, something.AppSalary, something.CurrentDevice, something.LastModifiedAt)
+						UpdateSocialSetting(m, "623206f40d8ab7ac0d59d62e", something.AppUsername, something.AppEmailAddress, something.AppAlignedCb, something.AppBillingPeriod, something.AppSalary, something.CurrentDevice, something.LastModifiedAt)
 						//
 						fmt.Println(" ...Hub.Broadcast something <<<",
 							"(Conn) Id='"+something.Id+"'",

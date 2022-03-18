@@ -1,8 +1,10 @@
 package login
 
 import (
+	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"social-service-sync/server/model/api"
 	"social-service-sync/server/model/entity"
@@ -10,8 +12,8 @@ import (
 	"time"
 )
 
-func HandlerFind(request api.LoginRequest) {
-	nameUsers, err := FindNameUsers(request.DeviceName)
+func HandlerFind(ctx context.Context, collection *mongo.Collection, request api.LoginRequest) {
+	nameUsers, err := FindNameUsers(ctx, collection, request.DeviceName)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -20,8 +22,8 @@ func HandlerFind(request api.LoginRequest) {
 	}
 }
 
-func HandlerGet(request api.LoginRequest) (*entity.User, error) {
-	user, err := GetUser(request.DeviceName) // TODO: Repository
+func HandlerGet(ctx context.Context, collection *mongo.Collection, request api.LoginRequest) (*entity.User, error) {
+	user, err := GetUser(ctx, collection, request.DeviceName) // TODO: Repository
 	if err != nil {
 		log.Fatal(err)
 	}

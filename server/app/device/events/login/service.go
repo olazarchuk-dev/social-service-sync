@@ -4,13 +4,13 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"go.mongodb.org/mongo-driver/mongo"
 	"math/rand"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 	"social-service-sync/server/app/config"
-	"social-service-sync/server/app/helper"
 	"social-service-sync/server/model/api"
 )
 
@@ -28,11 +28,11 @@ var (
 	JWT_ACCESS_TOKEN_EXPIRED = time.Duration(30) * (time.Hour * 24)
 )
 
-func Service(db *sql.DB, ctx context.Context, request api.LoginRequest) *api.LoginResponse {
+func Service(db *sql.DB, mongoDb *mongo.Database, ctx context.Context, request api.LoginRequest) *api.LoginResponse {
 
-	tx, err := db.Begin()
-	helper.PanicErr(err)
-	defer helper.RollbackErr(tx)
+	//tx, err := db.Begin()
+	//helper.PanicErr(err)
+	//defer helper.RollbackErr(tx)
 
 	var baseResponse api.BaseResponse
 	//result, errQuery := Repository(ctx, tx, request)
@@ -62,7 +62,9 @@ func Service(db *sql.DB, ctx context.Context, request api.LoginRequest) *api.Log
 	//}
 
 	//
-	user, err := HandlerGet(request)
+	collection := mongoDb.Collection("users")
+
+	user, err := HandlerGet(ctx, collection, request)
 	if err != nil {
 		baseResponse = api.BaseResponse{
 			Success: false,

@@ -1,4 +1,4 @@
-package register
+package app
 
 import (
 	"context"
@@ -10,12 +10,11 @@ import (
 )
 
 var (
-	UsersCollection *mongo.Collection
-	Ctx             = context.TODO()
+	MongoDb  *mongo.Database
+	MongoCtx = context.TODO()
 )
 
-/*Setup opens a database connection to mongodb*/
-func Setup() {
+func init() {
 
 	defer func() {
 		if r := recover(); r != nil {
@@ -30,16 +29,18 @@ func Setup() {
 
 	connectionURI := "mongodb://" + config.MongoHost + ":" + config.MongoPort + "/"
 	clientOptions := options.Client().ApplyURI(connectionURI)
-	client, err := mongo.Connect(Ctx, clientOptions)
+	client, err := mongo.Connect(MongoCtx, clientOptions)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = client.Ping(MongoCtx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = client.Ping(Ctx, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	MongoDb = client.Database(config.MongoDatabase)
+}
 
-	db := client.Database(config.MongoDatabase)
-	UsersCollection = db.Collection("users")
+func MongoConn() *mongo.Database {
+	return MongoDb
 }

@@ -8,8 +8,8 @@ import (
 	"social-service-sync/server/model/entity"
 )
 
-func CreateSocialSetting(u entity.SocialSetting) (string, error) {
-	result, err := SocialSettingsCollection.InsertOne(Ctx, u)
+func CreateSocialSetting(m *Mongo, u entity.SocialSetting) (string, error) {
+	result, err := m.Collection.InsertOne(m.Ctx, u)
 	if err != nil {
 		return "0", err
 	}
@@ -18,7 +18,7 @@ func CreateSocialSetting(u entity.SocialSetting) (string, error) {
 	return fmt.Sprintf("%v", oid.Hex()), err
 }
 
-func UpdateSocialSetting(id string, username string, email string, alignedCb bool, billingPeriod int, salary int, currentDevice Device, lastModifiedAt int) error {
+func UpdateSocialSetting(m *Mongo, id string, username string, email string, alignedCb bool, billingPeriod int, salary int, currentDevice Device, lastModifiedAt int) error {
 	objectId, errFound := primitive.ObjectIDFromHex(id)
 	helper.PanicErr(errFound)
 
@@ -32,6 +32,6 @@ func UpdateSocialSetting(id string, username string, email string, alignedCb boo
 		{"$set", bson.D{{"current_device", currentDevice}}},
 		{"$set", bson.D{{"last_modified_at", primitive.Timestamp{T: uint32(lastModifiedAt)}}}},
 	}
-	_, err := SocialSettingsCollection.UpdateOne(Ctx, filter, update)
+	_, err := m.Collection.UpdateOne(m.Ctx, filter, update)
 	return err
 }
