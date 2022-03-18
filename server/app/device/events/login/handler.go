@@ -2,15 +2,13 @@ package login
 
 import (
 	"context"
-	"database/sql"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/gofiber/fiber/v2"
 	"social-service-sync/server/model/api"
 )
 
-func Handler(ctx *fiber.Ctx, db *sql.DB, mongoDb *mongo.Database) error {
-	//ctxBg := context.Background()
+func Handler(ctx *fiber.Ctx, mongoDb *mongo.Database) error {
 	ctxBg := context.TODO()
 	user := new(api.LoginRequest)
 
@@ -18,7 +16,7 @@ func Handler(ctx *fiber.Ctx, db *sql.DB, mongoDb *mongo.Database) error {
 		panic(err)
 	}
 
-	res := Service(db, mongoDb, ctxBg, *user)
+	res := Service(mongoDb, ctxBg, *user)
 
 	return ctx.JSON(res)
 }

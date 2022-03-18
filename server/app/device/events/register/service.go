@@ -2,61 +2,38 @@ package register
 
 import (
 	"context"
-	"database/sql"
 	"go.mongodb.org/mongo-driver/mongo"
+	"log"
 	"math/rand"
 	"social-service-sync/server/model/api"
+	"social-service-sync/server/model/entity"
+	"time"
 )
 
-func Service(db *sql.DB, mongoDb *mongo.Database, ctx context.Context, request api.RegisterRequest) *api.RegisterResponse {
+func Service(mongoDb *mongo.Database, ctx context.Context, request api.RegisterRequest) *api.RegisterResponse {
 
-	//tx, err := db.Begin()
-	//helper.PanicErr(err)
-	//defer helper.RollbackErr(tx)
-	//
-	//bytes, errHash := bcrypt.GenerateFromPassword([]byte(request.Password), 10)
-	//helper.PanicErr(errHash)
-	//
-	//user := entity.Users{
-	//	DeviceName: request.DeviceName,
-	//	Password:   string(bytes),
-	//	Email:      request.Email,
-	//	Image:      request.Image,
-	//}
-	//
-	//result, errQuery := Repository(ctx, tx, user)
-	var baseResponse api.BaseResponse
-
-	//if errQuery != nil {
-	//	if strings.Contains(errQuery.Error(), "duplicate") {
-	//		baseResponse = api.BaseResponse{
-	//			Success: false,
-	//			Code:    400,
-	//			Message: "Users was registered",
-	//		}
-	//
-	//		return &api.RegisterResponse{
-	//			BaseResponse: &baseResponse,
-	//		}
-	//
-	//	}
-	//
-	//	baseResponse = api.BaseResponse{
-	//		Success: false,
-	//		Code:    500,
-	//		Message: "Something wrong",
-	//	}
-	//
-	//	return &api.RegisterResponse{
-	//		BaseResponse: &baseResponse,
-	//	}
-	//}
-
-	//
 	collection := mongoDb.Collection("users")
 
-	id, err := HandlerCreate(ctx, collection, request)
-	user, err := HandlerGet(ctx, collection, id)
+	newUser := entity.NewUser(
+		request.DeviceName,
+		request.Email,
+		request.Password,
+		time.Now(),
+		entity.AddDate(0, 0, 7),
+	)
+
+	id, err := CreateUser(ctx, collection, newUser)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	result, err := GetUser(ctx, collection, id) // TODO: Repository
+	if err != nil {
+		log.Fatal(err)
+	}
+	//entity.PrintUser(result)
+
+	var baseResponse api.BaseResponse
 	if err != nil {
 		baseResponse = api.BaseResponse{
 			Success: false,
@@ -68,7 +45,6 @@ func Service(db *sql.DB, mongoDb *mongo.Database, ctx context.Context, request a
 			BaseResponse: &baseResponse,
 		}
 	}
-	//
 
 	baseResponse = api.BaseResponse{
 		Success: true,
@@ -83,12 +59,10 @@ func Service(db *sql.DB, mongoDb *mongo.Database, ctx context.Context, request a
 			//DeviceName: result.DeviceName,
 			//Email:      request.Email,
 			//Image:      result.Image,
-
-			Id:         rand.Intn(100), // fmt.Sprintf("%v", user.ID.Hex()),
-			DeviceName: user.Username,
-			Email:      user.Email,
+			Id:         rand.Intn(100), // fmt.Sprintf("%v", user.ID.Hex()), // id
+			DeviceName: result.Username,
+			Email:      result.Email,
 			Image:      "",
 		},
 	}
-
 }

@@ -2,9 +2,9 @@ package login
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
+	"log"
 	"math/rand"
 	"time"
 
@@ -28,43 +28,20 @@ var (
 	JWT_ACCESS_TOKEN_EXPIRED = time.Duration(30) * (time.Hour * 24)
 )
 
-func Service(db *sql.DB, mongoDb *mongo.Database, ctx context.Context, request api.LoginRequest) *api.LoginResponse {
+func Service(mongoDb *mongo.Database, ctx context.Context, request api.LoginRequest) *api.LoginResponse {
 
-	//tx, err := db.Begin()
-	//helper.PanicErr(err)
-	//defer helper.RollbackErr(tx)
-
-	var baseResponse api.BaseResponse
-	//result, errQuery := Repository(ctx, tx, request)
-	//
-	//if errQuery != nil {
-	//	if strings.Contains(errQuery.Error(), "found") {
-	//		baseResponse = api.BaseResponse{
-	//			Success: false,
-	//			Code:    401,
-	//			Message: errQuery.Error(),
-	//		}
-	//
-	//		return &api.LoginResponse{
-	//			BaseResponse: &baseResponse,
-	//		}
-	//	}
-	//
-	//	baseResponse = api.BaseResponse {
-	//		Success: false,
-	//		Code:    401,
-	//		Message: "error when query to database",
-	//	}
-	//
-	//	return &api.LoginResponse{
-	//		BaseResponse: &baseResponse,
-	//	}
-	//}
-
-	//
 	collection := mongoDb.Collection("users")
 
-	user, err := HandlerGet(ctx, collection, request)
+	result, err := GetUser(ctx, collection, request.DeviceName) // TODO: Repository
+	//results, err := FindNameUsers(ctx, collection, request.DeviceName)// TODO: Repository
+	if err != nil {
+		log.Fatal(err)
+	}
+	//for n, user := range results {
+	//	entity.PrintUserList(n, user)
+	//}
+
+	var baseResponse api.BaseResponse
 	if err != nil {
 		baseResponse = api.BaseResponse{
 			Success: false,
@@ -77,10 +54,7 @@ func Service(db *sql.DB, mongoDb *mongo.Database, ctx context.Context, request a
 		}
 	}
 
-	errComparePass := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(request.Password))
-
-	//
-	//errComparePass := bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(request.Password))
+	errComparePass := bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(request.Password))
 	if errComparePass != nil {
 		return &api.LoginResponse{
 			BaseResponse: &api.BaseResponse{
@@ -105,8 +79,8 @@ func Service(db *sql.DB, mongoDb *mongo.Database, ctx context.Context, request a
 		//DeviceName: result.DeviceName,
 		//Email:      result.Email,
 		//Id:         result.Id,
-		DeviceName: user.Username,
-		Email:      user.Email,
+		DeviceName: result.Username,
+		Email:      result.Email,
 		Id:         rand.Intn(100), // fmt.Sprintf("%v", user.ID.Hex()),
 	}
 
@@ -118,8 +92,8 @@ func Service(db *sql.DB, mongoDb *mongo.Database, ctx context.Context, request a
 		//DeviceName: result.DeviceName,
 		//Email:      result.Email,
 		//Id:         result.Id,
-		DeviceName: user.Username,
-		Email:      user.Email,
+		DeviceName: result.Username,
+		Email:      result.Email,
 		Id:         rand.Intn(100), // fmt.Sprintf("%v", user.ID.Hex()),
 	}
 
@@ -152,5 +126,4 @@ func Service(db *sql.DB, mongoDb *mongo.Database, ctx context.Context, request a
 			RefreshToken: signedrefreshToken,
 		},
 	}
-
 }

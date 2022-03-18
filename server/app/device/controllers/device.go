@@ -20,11 +20,11 @@ func Init(app *fiber.App, db *sql.DB, mongoDb *mongo.Database) {
 	go hub.Run(m)
 
 	app.Post("/register", func(ctx *fiber.Ctx) error {
-		return register.Handler(ctx, db, mongoDb)
+		return register.Handler(ctx, mongoDb)
 	})
 
 	app.Post("/login", func(ctx *fiber.Ctx) error {
-		return login.Handler(ctx, db, mongoDb)
+		return login.Handler(ctx, mongoDb)
 	})
 
 	app.Post("/ws", middleware.JWTAuth, func(ctx *fiber.Ctx) error {
