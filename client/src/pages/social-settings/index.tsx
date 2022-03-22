@@ -383,7 +383,12 @@ export default function SocialSettings() {
                 </div>
                 <div />
             </div>
-            <div className="flex mt-60" />
+            {/*<div className="flex mt-60" />*/}
+            <div className="flex mt-10 mb-60  items-center justify-center">
+                <button className="mt-4 md:mt-0 border border-green text-green rounded-md p-2 md:ml-4">
+                    SAVE
+                </button>
+            </div>
           </div>
         </div>
 
