@@ -21,7 +21,7 @@ type Device struct {
 	Version string `json:"version" bson:"version,omitempty"`
 }
 
-func NewSocialSetting(username string, email string, alignedCb bool, billingPeriod int, salary int, lastModifiedAt time.Time, currentDevice Device) SocialSetting {
+func NewSocialSetting(username string, email string, alignedCb bool, billingPeriod int, salary int, lastModifiedAt int, currentDevice Device) SocialSetting {
 	socialSetting := SocialSetting{}
 	socialSetting.ID = primitive.NewObjectID()
 	socialSetting.Username = username
@@ -29,7 +29,7 @@ func NewSocialSetting(username string, email string, alignedCb bool, billingPeri
 	socialSetting.AlignedCb = alignedCb
 	socialSetting.BillingPeriod = billingPeriod
 	socialSetting.Salary = salary
-	socialSetting.LastModifiedAt = primitive.Timestamp{T: uint32(lastModifiedAt.Unix())}
+	socialSetting.LastModifiedAt = MillisecondsToTimestamp(lastModifiedAt)
 	socialSetting.CurrentDevice = currentDevice
 	return socialSetting
 }
@@ -39,4 +39,17 @@ func NewDevice(name string, version string) Device {
 	device.Name = name
 	device.Version = version
 	return device
+}
+
+func MillisecondsToTimestamp(milliseconds int) primitive.Timestamp {
+	t := MillisecondsToTime(milliseconds)
+	return TimeToTimestamp(t)
+}
+
+func TimeToTimestamp(t time.Time) primitive.Timestamp {
+	return primitive.Timestamp{T: uint32(t.Unix()), I: 0}
+}
+
+func MillisecondsToTime(milliseconds int) time.Time {
+	return time.Unix(0, int64(milliseconds)*int64(time.Millisecond))
 }

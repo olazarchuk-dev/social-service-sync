@@ -28,7 +28,7 @@ func Run() {
 	})
 
 	//
-	//newSocialSetting := entity.NewSocialSetting("", "", false, 0, 0, time.Now(), entity.NewDevice("", ""))
+	//newSocialSetting := entity.NewSocialSetting("", "", false, 0, 0, 1647937982625, entity.NewDevice("Firefox", "98.0"))
 	//socialSettingId, err := ws.RepositoryCreate(newSocialSetting)
 	//if err != nil {
 	//	log.Fatal(err)

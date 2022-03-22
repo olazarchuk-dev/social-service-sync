@@ -19,6 +19,21 @@
 
 ---
 
+* `Convert to time in Golang from milliseconds`: https://stackoverflow.com/questions/31744970/convert-to-time-in-golang-from-milliseconds
+* `Пакет bson для работы с MongoDB в Golang`: https://golang-blog.blogspot.com/2020/06/bson-mongodb-golang.html
+* `How to convert mongodb go driver's primitive.Timestamp type back to Golang time.Time type`: https://stackoverflow.com/questions/64418512/how-to-convert-mongodb-go-drivers-primitive-timestamp-type-back-to-golang-time
+```text
+BSON Timestamps содержат два значения:
+- 'T' for the seconds since Unix epoch
+- 'I' for an incrementing ordinal for operations within a given second
+
+Поэтому, если вы хотите преобразовать временную метку bson в time.Time, вы можете просто использовать:
+time.Unix(timestamp.T, 0)
+
+Точно так же, чтобы преобразовать текущее time.Time в primitive.Timestamp, мы можем использовать:
+primitive.Timestamp{T: uint32(time.Now().Unix()), I: 0}
+```
+
 #### Import cycle not allowed
 
 * https://stackoverflow.com/questions/28256923/import-cycle-not-allowed
